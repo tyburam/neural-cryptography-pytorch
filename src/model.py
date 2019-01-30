@@ -13,9 +13,7 @@ class CryptoNet(object):
                  epochs=NUM_EPOCHS, learning_rate=LEARNING_RATE):
         """
         Args:
-            sess: TensorFlow session
             msg_len: The length of the input message to encrypt.
-            key_len: Length of Alice and Bob's private key.
             batch_size: Minibatch size for each adversarial training
             epochs: Number of epochs in the adversarial training
             learning_rate: Learning Rate for Adam Optimizer
