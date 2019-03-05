@@ -57,8 +57,10 @@ class CryptoNet(object):
             err_eve = mae(msg, eve_output)
             err_bob = mae(msg, bob_output)
             bob_loss = err_bob + (1. - err_eve) ** 2
+            if i % 10 == 0:
+                print('epoch: {} bob error: {} eve error: {}'.format(i, err_bob.data, err_eve.data))
 
-            bob_loss.backward()
+            bob_loss.backward(retain_graph=True)
             comm_optimizer.step()
 
             eve_optimizer.zero_grad()
