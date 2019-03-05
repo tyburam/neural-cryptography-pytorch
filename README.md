@@ -9,14 +9,10 @@ Two Neural Networks, Alice and Bob learn to communicate secretly with each other
 
 ![Setup](assets/diagram.png)
 
-## Problems 
-Currently it fails in training method
-   
-    $ RuntimeError: Trying to backward through the graph a second time, but the buffers have already been freed. Specify retain_graph=True when calling backward the first time.
-
 ## Useful information
 PyTorch has a tiny little difference in convolution layer when compared with TensorFlow.  
 TF treats convolution input tensor as [batch_size, len, channels] while PyTorch way is [batch_size, channels, len]
+
 ## Pre-requisites
 
 * PyTorch
