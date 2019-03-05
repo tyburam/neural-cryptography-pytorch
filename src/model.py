@@ -1,6 +1,5 @@
 import itertools
 import torch
-import numpy as np
 
 from src.config import *
 from src.communicate_net import CommunicateNet
@@ -44,23 +43,24 @@ class CryptoNet(object):
 
         for i in range(self.epochs):
             data = gen_data(self.batch_size, self.msg_len, self.key_len)
+            msg = torch.tensor(data[0], dtype=torch.float)
+            key = torch.tensor(data[1], dtype=torch.float)
+            alice_input = torch.cat((msg, key), 1)
 
-            for row in data:
-                comm_optimizer.zero_grad()
+            comm_optimizer.zero_grad()
 
-                alice_input = torch.tensor(np.concatenate((row[0], row[1])), dtype=torch.float)
-                alice_output = self.alice(alice_input)
-                bob_output = self.bob(np.concatenate(alice_output, row[1]))
-                eve_output = self.eve(alice_output)
+            alice_output = self.alice(alice_input)
+            bob_input = torch.cat((alice_output, key), 1)
+            bob_output = self.bob(bob_input)
+            eve_output = self.eve(alice_output)
 
-                err_eve = mae(row[0], eve_output)
-                err_bob = mae(row[0], bob_output)
-                bob_loss = err_bob + (1. - err_eve) ** 2
+            err_eve = mae(msg, eve_output)
+            err_bob = mae(msg, bob_output)
+            bob_loss = err_bob + (1. - err_eve) ** 2
 
-                bob_loss.backward()
-                comm_optimizer.step()
+            bob_loss.backward()
+            comm_optimizer.step()
 
-                eve_optimizer.zero_grad()
-                err_eve.backward()
-                eve_optimizer.step()
-
+            eve_optimizer.zero_grad()
+            err_eve.backward()
+            eve_optimizer.step()
