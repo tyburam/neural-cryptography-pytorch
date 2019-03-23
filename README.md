@@ -17,6 +17,8 @@ TF treats convolution input tensor as [batch_size, len, channels] while PyTorch 
 
 * PyTorch
 * Numpy
+* Matplotlib
+* Seaborn
 
 ## Usage 
 First, ensure you have the dependencies installed.
