@@ -4,7 +4,7 @@ import torch
 from src.config import *
 from src.communicate_net import CommunicateNet
 from src.eve_net import EveNet
-from src.utils import gen_data
+from src.utils import gen_data, init_xavier
 
 
 class CryptoNet(object):
@@ -34,6 +34,10 @@ class CryptoNet(object):
         self.alice = CommunicateNet()
         self.bob = CommunicateNet()
         self.eve = EveNet()
+
+        self.alice.apply(init_xavier)
+        self.bob.apply(init_xavier)
+        self.eve.apply(init_xavier)
 
     def train(self):
         mae = torch.nn.L1Loss()
