@@ -23,6 +23,10 @@ def build_parser():
                         dest='batch_size', help='batch size',
                         metavar='BATCH_SIZE', default=BATCH_SIZE)
 
+    parser.add_argument('--iterations', type=int,
+                        dest='iterations', help='Number of iterations in epoch',
+                        metavar='ITERATIONS', default=NUM_ITERATIONS)
+
     return parser
 
 
@@ -31,8 +35,10 @@ def main():
     options = parser.parse_args()
 
     crypto_net = CryptoNet(msg_len=options.msg_len, epochs=options.epochs,
-                           batch_size=options.batch_size, learning_rate=options.learning_rate)
+                           batch_size=options.batch_size, learning_rate=options.learning_rate,
+                           iterations=options.iterations)
     crypto_net.train()
+    crypto_net.plot_errors()
 
 
 if __name__ == '__main__':
